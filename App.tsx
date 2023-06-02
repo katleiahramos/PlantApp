@@ -88,7 +88,35 @@ function App(): JSX.Element {
               <BluetoothConnectorComponent
                 setCurrentMoistureLevel={setCurrentMoistureLevel}
               />
-              <Text>Current moisture level: {showMoistureLevel()}</Text>
+              <View style={styles.currentMoistureLevel}>
+                <Text>Current moisture level: {showMoistureLevel()}</Text>
+              </View>
+
+              <TextInput
+                style={styles.input}
+                onChangeText={setSearchTerm}
+                value={searchTerm}
+                placeholder="Enter a search term to find plant info"
+              />
+
+              <View style={{width: 200, alignSelf: 'center'}}>
+                <Button
+                  onPress={findPlantInfo}
+                  title="Search for plant info"
+                  color="#841584"
+                />
+              </View>
+
+              {plantData && (
+                <View style={styles.plantInfo}>
+                  <Text style={styles.plantInfoText}>
+                    {plantData.common_name}
+                  </Text>
+                  <Text style={styles.plantInfoText}>
+                    Watering: {plantData.watering}
+                  </Text>
+                </View>
+              )}
             </View>
           )}
           {view === 'ADD_PLANT' && (
@@ -99,11 +127,7 @@ function App(): JSX.Element {
                 onChangeText={setSearchTerm}
                 value={searchTerm}
               />
-              <Button
-                onPress={findPlantInfo}
-                title="Search for plant info"
-                color="#841584"
-              />
+              <Button onPress={findPlantInfo} title="Search for plant info" />
               {plantData && (
                 <View>
                   <Text>{plantData.common_name}</Text>
@@ -145,8 +169,24 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+    width: 280,
+    alignSelf: 'center',
   },
   searchButton: {},
+  currentMoistureLevel: {
+    alignItems: 'center',
+    padding: 24,
+    margin: 10,
+    borderWidth: 4,
+    borderColor: '#841584',
+  },
+  plantInfo: {
+    alignItems: 'center',
+    padding: 12,
+  },
+  plantInfoText: {
+    fontSize: 18,
+  },
 });
 
 export default App;
