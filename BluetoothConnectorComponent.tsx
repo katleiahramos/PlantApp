@@ -28,13 +28,14 @@ declare module 'react-native-ble-manager' {
   }
 }
 
-export default function BluetoothConnectorComponent({setCurrentMoistureLevel}) {
+export default function BluetoothConnectorComponent({
+  setCurrentMoistureLevel,
+  setDeviceConnected,
+}) {
   const [devices, setDevices] = useState(new Map());
   const [connectedDevice, setConnectedDevice] = useState<Peripheral>();
   const [scanning, setScanning] = useState(false);
   const [home, setHome] = useState(true);
-
-  const [data, setData] = useState(null);
 
   const getPermission1 = async () => {
     if (Platform.OS === 'android') {
@@ -117,6 +118,7 @@ export default function BluetoothConnectorComponent({setCurrentMoistureLevel}) {
         prevDevices => new Map(prevDevices.set(peripheral.id, peripheral)),
       );
     }
+    setDeviceConnected(false);
     console.debug(
       `[handleDisconnectedPeripheral][${event.peripheral}] disconnected.`,
     );
@@ -171,6 +173,7 @@ export default function BluetoothConnectorComponent({setCurrentMoistureLevel}) {
       .then(() => {
         // Success code
         setConnectedDevice(item);
+        setDeviceConnected(true);
       })
       .catch(error => {
         // Failure code

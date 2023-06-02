@@ -9,12 +9,8 @@ import React, {useState} from 'react';
 
 import {
   Button,
-  Image,
-  NativeEventEmitter,
-  NativeModules,
   SafeAreaView,
   ScrollView,
-  SectionList,
   StatusBar,
   StyleSheet,
   Text,
@@ -30,6 +26,7 @@ function App(): JSX.Element {
   const [searchTerm, setSearchTerm] = useState('');
   const [plantData, setPlantData] = useState(null);
   const [currentMoistureLevel, setCurrentMoistureLevel] = useState(0);
+  const [deviceConnected, setDeviceConnected] = useState(false);
 
   const handleChangeView = () => {
     setView('ADD_PLANT');
@@ -87,9 +84,14 @@ function App(): JSX.Element {
               {/* <Button title="Add Plant +" onPress={handleChangeView} /> */}
               <BluetoothConnectorComponent
                 setCurrentMoistureLevel={setCurrentMoistureLevel}
+                setDeviceConnected={setDeviceConnected}
               />
               <View style={styles.currentMoistureLevel}>
-                <Text>Current moisture level: {showMoistureLevel()}</Text>
+                {deviceConnected ? (
+                  <Text>Current moisture level: {showMoistureLevel()}</Text>
+                ) : (
+                  <Text>Waiting for device...</Text>
+                )}
               </View>
 
               <TextInput
